@@ -6,7 +6,7 @@ import { ComponentProps } from 'react';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
 type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
+export type IconSymbolName = keyof typeof MAPPING; // Export type for use in other components
 
 /**
  * Add your SF Symbols to Material Icons mappings here.
@@ -19,6 +19,11 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'line.horizontal.3': 'menu', // Added for hamburger menu
+  'heart.fill': 'favorite', // New mapping for 'Favoritos'
+  'clock.fill': 'history', // New mapping for 'Historial'
+  'person.3.fill': 'group', // New mapping for 'Seguidos' (using a generic group icon)
+  'bag.fill': 'shopping-bag', // New mapping for 'Pedidos'
+  'search': 'search',
 } as IconMapping;
 
 /**
@@ -31,6 +36,7 @@ export function IconSymbol({
   size = 24,
   color,
   style,
+  weight,
 }: {
   name: IconSymbolName;
   size?: number;
