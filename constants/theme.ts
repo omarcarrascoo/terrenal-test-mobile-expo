@@ -5,7 +5,7 @@ const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
+    text: '#0a0a0a', // Closer to black, as seen in Figma titles/texts
     background: '#f8f8f8', // Soft off-white for a modern background
     cardBackground: '#ffffff', // Pure white for cards, for contrast
     primary: tintColorLight, // Main accent color
@@ -14,13 +14,14 @@ export const Colors = {
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
     shadow: 'rgba(0,0,0,0.08)', // Soft shadow for depth
-    placeholder: '#8e8e93', // Muted placeholder text color
+    placeholder: '#828282', // Muted placeholder text color, updated from Figma
     // New colors from Figma analysis
     lightNeutral: '#F5F5F5', // For search bar background, circular image backgrounds
     border: '#E6E6E6', // For pill borders
+    tabBarShadow: 'rgba(0,0,0,0.1)', // New color for tab bar shadow from Figma
   },
   dark: {
-    text: '#ECEDEE',
+    text: '#ededee', // Closer to white
     background: '#0a0a0a', // Deep dark background
     cardBackground: '#1c1c1c', // Slightly lighter dark for cards
     primary: tintColorDark, // Main accent color
@@ -29,10 +30,11 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
     shadow: 'rgba(255,255,255,0.03)', // Subtle shadow in dark mode
-    placeholder: '#7a7a7e', // Muted placeholder text color
+    placeholder: '#7a7a7e', // Muted placeholder text color (keeping existing dark mode placeholder)
     // New colors for dark mode
     lightNeutral: '#333333', // Darker neutral for search bar background
     border: '#444444', // Darker border color
+    tabBarShadow: 'rgba(255,255,255,0.1)', // Dark mode equivalent for tab bar shadow
   },
 };
 

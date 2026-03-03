@@ -25,7 +25,7 @@ export function SearchBar({ placeholder = 'Buscar', value, onChangeText, onPress
       activeOpacity={onPress ? 0.7 : 1}
       disabled={!onPress && !onChangeText} // Disable if neither onPress nor onChangeText is provided
     >
-      <IconSymbol name="search" size={20} color={iconColor} />
+      <IconSymbol name="search" size={24} color={iconColor} />
       <TextInput
         style={[styles.input, { color: textColor }]
 
