@@ -15,6 +15,9 @@ export const Colors = {
     tabIconSelected: tintColorLight,
     shadow: 'rgba(0,0,0,0.08)', // Soft shadow for depth
     placeholder: '#8e8e93', // Muted placeholder text color
+    // New colors from Figma analysis
+    lightNeutral: '#F5F5F5', // For search bar background, circular image backgrounds
+    border: '#E6E6E6', // For pill borders
   },
   dark: {
     text: '#ECEDEE',
@@ -27,6 +30,9 @@ export const Colors = {
     tabIconSelected: tintColorDark,
     shadow: 'rgba(255,255,255,0.03)', // Subtle shadow in dark mode
     placeholder: '#7a7a7e', // Muted placeholder text color
+    // New colors for dark mode
+    lightNeutral: '#333333', // Darker neutral for search bar background
+    border: '#444444', // Darker border color
   },
 };
 

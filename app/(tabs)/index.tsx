@@ -1,66 +1,166 @@
-import React from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { Link } from 'expo-router';
+import React, { useState } from 'react';
+import { StyleSheet, ScrollView, View, Alert } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors, Spacing, Fonts } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
+import { SearchBar } from '@/components/home/search-bar';
+import { Pill } from '@/components/home/pill';
+import { HomeBanner } from '@/components/home/home-banner';
+import { SectionHeader } from '@/components/home/section-header';
+import { CategoryHorizontalCard } from '@/components/home/category-horizontal-card';
+import { ProductVerticalCard } from '@/components/home/product-vertical-card';
+import { ImageHorizontalCard } from '@/components/home/image-horizontal-card';
+import { IconSymbolName } from '@/components/ui/icon-symbol'; // Import IconSymbolName type
+
+// Dummy data for the UI components
+const pillsData: { id: string; label: string; icon: IconSymbolName }[] = [
+  { id: '1', label: 'Favoritos', icon: 'heart.fill' },
+  { id: '2', label: 'Historial', icon: 'clock.fill' },
+  { id: '3', label: 'Seguidos', icon: 'person.3.fill' },
+  { id: '4', label: 'Pedidos', icon: 'bag.fill' },
+];
+
+const categoriesData = [
+  { id: '1', title: 'Comida', imageUrl: 'https://picsum.photos/id/1040/76/76' },
+  { id: '2', title: 'Ropa', imageUrl: 'https://picsum.photos/id/1041/76/76' },
+  { id: '3', title: 'Hogar', imageUrl: 'https://picsum.photos/id/1042/76/76' },
+  { id: '4', title: 'Electrónica', imageUrl: 'https://picsum.photos/id/1043/76/76' },
+  { id: '5', title: 'Libros', imageUrl: 'https://picsum.photos/id/1044/76/76' },
+  { id: '6', title: 'Deportes', imageUrl: 'https://picsum.photos/id/1045/76/76' },
+];
+
+const productsData = [
+  { id: '1', brand: 'Nike', name: 'Zapatillas Deportivas Air Max', price: '$120.00', imageUrl: 'https://picsum.photos/id/1015/148/148' },
+  { id: '2', brand: 'Adidas', name: 'Pantalones de Chándal', price: '$50.00', imageUrl: 'https://picsum.photos/id/1016/148/148' },
+  { id: '3', brand: 'Zara', name: 'Camiseta Básica Algodón', price: '$25.00', imageUrl: 'https://picsum.photos/id/1018/148/148' },
+  { id: '4', brand: 'Apple', name: 'Auriculares Inalámbricos Pro', price: '$200.00', imageUrl: 'https://picsum.photos/id/1025/148/148' },
+];
+
+const largeImageData = [
+  { id: '1', imageUrl: 'https://picsum.photos/id/1000/96/96' },
+  { id: '2', imageUrl: 'https://picsum.photos/id/1001/96/96' },
+  { id: '3', imageUrl: 'https://picsum.photos/id/1002/96/96' },
+  { id: '4', imageUrl: 'https://picsum.photos/id/1003/96/96' },
+  { id: '5', imageUrl: 'https://picsum.photos/id/1004/96/96' },
+];
 
 export default function HomeScreen() {
+  const [activePill, setActivePill] = useState(pillsData[0].id);
+
+  const handlePillPress = (id: string) => {
+    setActivePill(id);
+    Alert.alert('Pill Seleccionada', `Has seleccionado la píldora con ID: ${id}`);
+  };
+
+  const handleSearchPress = () => {
+    Alert.alert('Buscar', 'Has presionado la barra de búsqueda!');
+    // In a real app, navigate to a search screen or open a search modal
+  };
+
+  const handleBannerPress = () => {
+    Alert.alert('Banner', 'Has presionado el banner!');
+  };
+
+  const handleCategoryPress = (title: string) => {
+    Alert.alert('Categoría', `Has seleccionado la categoría: ${title}`);
+    // In a real app, navigate to category details
+  };
+
+  const handleProductPress = (name: string) => {
+    Alert.alert('Producto', `Has seleccionado el producto: ${name}`);
+    // In a real app, navigate to product details
+  };
+
+  const handleLargeImagePress = (id: string) => {
+    Alert.alert('Imagen', `Has seleccionado la imagen con ID: ${id}`);
+    // In a real app, navigate to image gallery or details
+  };
+
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <ThemedText type="title" style={styles.title}>
-          Bienvenido
-        </ThemedText>
-        <ThemedText type="subtitle" style={styles.subtitle}>
-          Descubre tu próxima aventura con nosotros. ¡Estamos aquí para guiarte!
-        </ThemedText>
 
-        <ThemedView style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.cardTitle}>
-            Explora Categorías
-          </ThemedText>
-          <ThemedText style={styles.cardDescription}>
-            Sumérgete en un mundo de posibilidades. Encuentra desde gastronomía local hasta emocionantes deportes al aire libre.
-          </ThemedText>
-          <Link href="/explore" asChild>
-            <TouchableOpacity style={styles.button}>
-              <ThemedText style={styles.buttonText}>Ver todas las categorías</ThemedText>
-            </TouchableOpacity>
-          </Link>
-        </ThemedView>
+        {/* Search Bar */}
+        <SearchBar placeholder="Buscar productos..." onPress={handleSearchPress} />
 
-        <ThemedView style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.cardTitle}>
-            Crea Tu Propia Aventura
-          </ThemedText>
-          <ThemedText style={styles.cardDescription}>
-            ¿Tienes una idea? Personaliza tu viaje, elige tus destinos y actividades favoritas para una experiencia única.
-          </ThemedText>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => Alert.alert('Aventura Personalizada', '¡Pronto podrás crear tus propias aventuras!')}
-          >
-            <ThemedText style={styles.buttonText}>Empezar a crear</ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
+        {/* Pills (Horizontal Scroll) */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.pillsContainer}
+        >
+          {pillsData.map((pill) => (
+            <Pill
+              key={pill.id}
+              iconName={pill.icon}
+              label={pill.label}
+              onPress={() => handlePillPress(pill.id)}
+              isActive={pill.id === activePill}
+            />
+          ))}
+        </ScrollView>
 
-        <ThemedView style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.cardTitle}>
-            Novedades y Eventos
-          </ThemedText>
-          <ThemedText style={styles.cardDescription}>
-            Mantente al día con los últimos eventos y las experiencias más populares cerca de ti.
-          </ThemedText>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => Alert.alert('Novedades', '¡Descubre lo nuevo y emocionante!')}
-          >
-            <ThemedText style={styles.buttonText}>Ver novedades</ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
+        {/* Main Banner */}
+        <HomeBanner
+          title="Título del banner"
+          imageUrl="https://picsum.photos/id/10/343/136" // Placeholder image
+          onPress={handleBannerPress}
+        />
 
+        {/* Categories Section */}
+        <SectionHeader title="Explorar Categorías" onPressViewAll={() => Alert.alert('Ver Todo', 'Ver todas las categorías')} />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalCarouselContainer}
+        >
+          {categoriesData.map((category) => (
+            <CategoryHorizontalCard
+              key={category.id}
+              title={category.title}
+              imageUrl={category.imageUrl}
+              onPress={() => handleCategoryPress(category.title)}
+            />
+          ))}
+        </ScrollView>
+
+        {/* Products Section */}
+        <SectionHeader title="Productos Populares" onPressViewAll={() => Alert.alert('Ver Todo', 'Ver todos los productos')} />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalCarouselContainer}
+        >
+          {productsData.map((product) => (
+            <ProductVerticalCard
+              key={product.id}
+              brand={product.brand}
+              name={product.name}
+              price={product.price}
+              imageUrl={product.imageUrl}
+              onPress={() => handleProductPress(product.name)}
+            />
+          ))}
+        </ScrollView>
+
+        {/* Large Images Section */}
+        <SectionHeader title="Novedades Destacadas" onPressViewAll={() => Alert.alert('Ver Todo', 'Ver todas las novedades')} />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalCarouselContainer}
+        >
+          {largeImageData.map((imageItem) => (
+            <ImageHorizontalCard
+              key={imageItem.id}
+              imageUrl={imageItem.imageUrl}
+              onPress={() => handleLargeImagePress(imageItem.id)}
+            />
+          ))}
+        </ScrollView>
+
+        {/* Padding for the bottom of the scroll view so content doesn't get hidden by the tab bar and footer */}
+        <View style={{ height: Spacing.xxxl * 2 }} />
       </ScrollView>
     </ThemedView>
   );
@@ -69,65 +169,19 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    // ThemedView already handles background color based on theme
   },
   scrollContent: {
+    paddingTop: Spacing.large, // Initial padding at the top
+  },
+  pillsContainer: {
     paddingHorizontal: Spacing.large,
-    paddingVertical: Spacing.large,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 34,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    marginBottom: Spacing.small,
-    marginTop: Spacing.xl,
-    textAlign: 'center',
-    fontFamily: Fonts.rounded, 
-  },
-  subtitle: {
-    fontSize: 18,
-    color: Colors.text,
-    marginBottom: Spacing.xxl,
-    textAlign: 'center',
-    maxWidth: '90%',
-    lineHeight: 28,
-  },
-  card: {
-    width: '100%',
-    backgroundColor: Colors.cardBackground,
-    borderRadius: Spacing.medium,
-    padding: Spacing.large,
-    marginBottom: Spacing.xl,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 4 }, // Increased shadow offset for more depth
-    shadowOpacity: 0.15,
-    shadowRadius: 8, // Increased shadow radius for a softer look
-    elevation: 6,
-  },
-  cardTitle: {
-    fontSize: 20,
-    color: Colors.primary,
-    marginBottom: Spacing.small,
-  },
-  cardDescription: {
-    fontSize: 16,
-    color: Colors.text,
-    marginBottom: Spacing.medium,
-    lineHeight: 24,
-  },
-  button: {
-    backgroundColor: Colors.tint,
     paddingVertical: Spacing.medium,
-    paddingHorizontal: Spacing.large,
-    borderRadius: Spacing.small,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: Spacing.small,
+    gap: Spacing.small, // Figma itemSpacing: 8
   },
-  buttonText: {
-    color: Colors.background,
-    fontSize: 16,
-    fontWeight: 'bold',
+  horizontalCarouselContainer: {
+    paddingHorizontal: Spacing.large,
+    paddingVertical: Spacing.small, // Vertical padding for carousel row
+    // The individual card components handle their right margin to create itemSpacing
   },
 });
