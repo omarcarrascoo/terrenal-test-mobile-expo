@@ -1,112 +1,152 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+import { Colors, Spacing, Fonts } from '@/constants/theme';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
-export default function TabTwoScreen() {
+const exploreCategories = [
+  { id: '1', name: 'Aventura' },
+  { id: '2', name: 'Comida y Bebida' },
+  { id: '3', name: 'Arte y Cultura' },
+  { id: '4', name: 'Naturaleza y Aire Libre' },
+  { id: '5', name: 'Tecnología' },
+  { id: '6', name: 'Salud y Bienestar' },
+  { id: '7', name: 'Educación' },
+  { id: '8', name: 'Deportes' },
+  { id: '9', name: 'Música' },
+  { id: '10', name: 'Moda' },
+  { id: '11', name: 'Gaming' },
+  { id: '12', name: 'Viajes' },
+];
+
+export default function ExploreScreen() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const cardBackgroundColor = useThemeColor({}, 'cardBackground');
+  const textColor = useThemeColor({}, 'text');
+  const placeholderColor = useThemeColor({}, 'placeholder');
+  const shadowColor = useThemeColor({}, 'shadow');
+  const primaryColor = useThemeColor({}, 'primary');
+
+  const handleCategoryPress = (categoryName: string) => {
+    Alert.alert('Explora', `Has seleccionado: ${categoryName}`);
+    // En una aplicación real, navegarías a una pantalla de detalles de categoría o filtrarías resultados
+  };
+
+  const filteredCategories = exploreCategories.filter(category =>
+    category.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <ThemedText type="title" style={styles.title}>Explora</ThemedText>
+        <ThemedText type="subtitle" style={styles.subtitle}>Descubre nuevas experiencias</ThemedText>
+
+        <TextInput
+          style={[
+            styles.searchInput,
+            { backgroundColor: cardBackgroundColor, color: textColor, borderColor: shadowColor }
+          ]}
+          placeholder="Buscar categorías..."
+          placeholderTextColor={placeholderColor}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          autoCapitalize="none"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+
+        <View style={styles.categoriesGrid}>
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                style={[
+                  styles.categoryCard,
+                  { backgroundColor: cardBackgroundColor, shadowColor: shadowColor }
+                ]}
+                onPress={() => handleCategoryPress(category.name)}
+              >
+                <ThemedText style={[styles.categoryText, { color: primaryColor }]}>{category.name}</ThemedText>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <ThemedText style={[styles.noResultsText, { color: textColor }]}>No se encontraron categorías para "{searchQuery}"</ThemedText>
+          )}
+        </View>
+        {/* Added a padding at the bottom of ScrollView to avoid tab bar overlap */}
+        <View style={{ height: Spacing.xxxl }} />
+      </ScrollView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    // ThemedView already handles background, no need to set here unless overriding
   },
-  titleContainer: {
+  scrollContent: {
+    paddingHorizontal: Spacing.large,
+    paddingTop: Spacing.large,
+    paddingBottom: Spacing.large, // Ensure scroll view has some padding at bottom
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    // ThemedText type='title' will handle color dynamically based on theme. If specific branding color is needed, pass it explicitly.
+    marginBottom: Spacing.small,
+    textAlign: 'center',
+    fontFamily: Fonts.rounded,
+  },
+  subtitle: {
+    fontSize: 16,
+    // ThemedText type='subtitle' will handle color dynamically.
+    marginBottom: Spacing.xl,
+    textAlign: 'center',
+  },
+  searchInput: {
+    width: '100%',
+    height: 50,
+    borderRadius: Spacing.small,
+    paddingHorizontal: Spacing.medium,
+    marginBottom: Spacing.large,
+    fontSize: 16,
+    borderWidth: 1,
+  },
+  categoriesGrid: {
     flexDirection: 'row',
-    gap: 8,
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  categoryCard: {
+    width: '48%', // Para dos columnas con espacio entre ellas
+    borderRadius: Spacing.small,
+    padding: Spacing.medium,
+    marginBottom: Spacing.medium,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 3,
+    minHeight: 100,
+  },
+  categoryText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  noResultsText: {
+    fontSize: 16,
+    textAlign: 'center',
+    width: '100%',
+    marginTop: Spacing.large,
   },
 });
