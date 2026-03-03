@@ -19,6 +19,9 @@ export const Colors = {
     lightNeutral: '#F5F5F5', // For search bar background, circular image backgrounds
     border: '#E6E6E6', // For pill borders
     tabBarShadow: 'rgba(0,0,0,0.1)', // New color for tab bar shadow from Figma
+    discussCardBg: '#ECECEC', // Figma card background color
+    discussTextMuted: 'rgba(0,0,0,0.75)', // Figma muted text opacity
+    discussIconBg: '#D9D9D9', // Figma icon background
   },
   dark: {
     text: '#ededee', // Closer to white
@@ -35,6 +38,9 @@ export const Colors = {
     lightNeutral: '#333333', // Darker neutral for search bar background
     border: '#444444', // Darker border color
     tabBarShadow: 'rgba(255,255,255,0.1)', // Dark mode equivalent for tab bar shadow
+    discussCardBg: '#2a2a2a', // Dark mode card background
+    discussTextMuted: 'rgba(255,255,255,0.75)', // Dark mode muted text
+    discussIconBg: '#3a3a3a', // Dark mode icon background
   },
 };
 
