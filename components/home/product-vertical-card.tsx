@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: '100%', // Figma layoutAlign: STRETCH for Info
-    gap: Spacing.xsmall, // Figma itemSpacing: 2 between text elements
+    gap: 2, // Figma itemSpacing: 2 between text elements, updated from Spacing.xsmall (4)
   },
   brand: {
     fontSize: 12, // Figma fontSize: 12
