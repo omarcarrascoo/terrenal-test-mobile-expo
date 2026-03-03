@@ -6,71 +6,69 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
+  ScrollView,
   Alert,
 } from 'react-native';
 import { Colors, Spacing } from './theme';
 
-const App = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const exploreCategories = [
+  { id: '1', name: 'Adventure' },
+  { id: '2', name: 'Food & Drink' },
+  { id: '3', name: 'Art & Culture' },
+  { id: '4', name: 'Nature & Outdoors' },
+  { id: '5', name: 'Technology' },
+  { id: '6', name: 'Health & Wellness' },
+  { id: '7', name: 'Education' },
+  { id: '8', name: 'Sports' },
+  { id: '9', name: 'Music' },
+  { id: '10', name: 'Fashion' },
+  { id: '11', name: 'Gaming' },
+  { id: '12', name: 'Travel' },
+];
 
-  const handleLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Please enter both email and password.');
-      return;
-    }
-    // In a real application, you would send these credentials to your backend API
-    // For this example, we'll just show an alert
-    Alert.alert('Login Attempt', `Email: ${email}\nPassword: ${password}`);
-    console.log('Login attempt:', { email, password });
+const App = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleCategoryPress = (categoryName) => {
+    Alert.alert('Explore', `You selected: ${categoryName}`);
+    // En una aplicación real, navegarías a una pantalla de detalles de categoría o filtrarías resultados
   };
+
+  const filteredCategories = exploreCategories.filter(category =>
+    category.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <View style={styles.content}>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Login to your account</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Explora</Text>
+        <Text style={styles.subtitle}>Descubre nuevas experiencias</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor={Colors.placeholder}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor={Colors.placeholder}
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar categorías..."
+          placeholderTextColor={Colors.placeholder}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          autoCapitalize="none"
+        />
 
-          <TouchableOpacity style={styles.forgotPasswordButton}>
-            <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>Login</Text>
-          </TouchableOpacity>
-
-          <View style={styles.signUpContainer}>
-            <Text style={styles.signUpText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => Alert.alert('Navigate', 'Go to Sign Up screen')}>
-              <Text style={styles.signUpLink}> Sign Up</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+        <ScrollView contentContainerStyle={styles.categoriesGrid}>
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                style={styles.categoryCard}
+                onPress={() => handleCategoryPress(category.name)}
+              >
+                <Text style={styles.categoryText}>{category.name}</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={styles.noResultsText}>No se encontraron categorías para "{searchQuery}"</Text>
+          )}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -82,80 +80,67 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: Spacing.large,
-  },
-  content: {
-    width: '100%',
-    maxWidth: 400, // Maximum width for better readability on larger screens
-    alignItems: 'center',
-    padding: Spacing.xl,
-    backgroundColor: Colors.cardBackground,
-    borderRadius: Spacing.small,
-    shadowColor: '#000', // A generic black for shadow, as background is dark
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    paddingHorizontal: Spacing.large,
+    paddingTop: Spacing.large,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: Colors.primary,
     marginBottom: Spacing.small,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
     color: Colors.text,
     marginBottom: Spacing.xl,
+    textAlign: 'center',
   },
-  input: {
+  searchInput: {
     width: '100%',
     height: 50,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.cardBackground,
     borderRadius: Spacing.small,
     paddingHorizontal: Spacing.medium,
     color: Colors.text,
-    marginBottom: Spacing.medium,
+    marginBottom: Spacing.large,
     fontSize: 16,
     borderWidth: 1,
     borderColor: Colors.background, // Match input border to its background
   },
-  forgotPasswordButton: {
-    alignSelf: 'flex-end',
-    marginBottom: Spacing.large,
-  },
-  forgotPasswordText: {
-    color: Colors.link,
-    fontSize: 14,
-  },
-  loginButton: {
-    width: '100%',
-    height: 50,
-    backgroundColor: Colors.primary,
-    borderRadius: Spacing.small,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: Spacing.xl,
-  },
-  loginButtonText: {
-    color: Colors.text,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  signUpContainer: {
+  categoriesGrid: {
     flexDirection: 'row',
-    marginTop: Spacing.medium,
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingBottom: Spacing.large,
   },
-  signUpText: {
-    color: Colors.text,
-    fontSize: 14,
+  categoryCard: {
+    width: '48%', // Para dos columnas con espacio entre ellas
+    backgroundColor: Colors.cardBackground,
+    borderRadius: Spacing.small,
+    padding: Spacing.medium,
+    marginBottom: Spacing.medium,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 3,
+    minHeight: 100,
   },
-  signUpLink: {
-    color: Colors.link,
-    fontSize: 14,
+  categoryText: {
+    color: Colors.primary,
+    fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  noResultsText: {
+    color: Colors.text,
+    fontSize: 16,
+    textAlign: 'center',
+    width: '100%',
+    marginTop: Spacing.large,
   },
 });
 
