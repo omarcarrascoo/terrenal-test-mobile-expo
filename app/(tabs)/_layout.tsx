@@ -7,7 +7,7 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Spacing } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Header } from '@/components/header';
+import { AppHeader } from '@/components/header'; // Corrected import path, still refers to original file structure
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 export default function TabLayout() {
@@ -22,12 +22,12 @@ export default function TabLayout() {
 
   return (
     <View style={[styles.rootContainer, { backgroundColor: rootBackgroundColor }]}> {/* Root container for the entire screen */}
-      <Header onMenuPress={handleMenuPress} title="Terrenal" />
+      <AppHeader onMenuPress={handleMenuPress} title="Terrenal" />
       <View style={styles.tabsContentContainer}> {/* This View takes the remaining space for Tabs */}
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-            headerShown: false, // Keep this false as Header component is used above
+            headerShown: false, // Keep this false as AppHeader component is used above
             tabBarButton: HapticTab,
             tabBarStyle: {
               backgroundColor: Colors[colorScheme ?? 'light'].cardBackground, // Use cardBackground for tab bar (white in light mode)
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabsContentContainer: {
-    flex: 1, // Allows the Tabs navigator to fill the space between Header and the custom Tab Bar height
+    flex: 1, // Allows the Tabs navigator to fill the space between AppHeader and the custom Tab Bar height
   },
 });

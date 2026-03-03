@@ -3,12 +3,12 @@ import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Platform } from
 import { Colors, Spacing, Fonts } from '@/constants/theme';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
-interface HeaderProps {
+interface AppHeaderProps { /* Renamed from HeaderProps to AppHeaderProps */
   onMenuPress: () => void;
   title?: string;
 }
 
-export function Header({ onMenuPress, title = 'Terrenal' }: HeaderProps) {
+export function AppHeader({ onMenuPress, title = 'Terrenal' }: AppHeaderProps) { /* Renamed from Header to AppHeader */
   // El encabezado siempre será negro y moderno, como se solicitó, sobrescribiendo el tema general.
   const headerBackgroundColor = Colors.dark.background;
   const headerTextColor = Colors.dark.text;

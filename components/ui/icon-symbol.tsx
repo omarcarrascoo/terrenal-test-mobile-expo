@@ -24,6 +24,7 @@ const MAPPING = {
   'person.3.fill': 'group', // New mapping for 'Seguidos' (using a generic group icon)
   'bag.fill': 'shopping-bag', // New mapping for 'Pedidos'
   'search': 'search',
+  'chevron.left': 'chevron-left', // Added for checkout back button
 } as IconMapping;
 
 /**
