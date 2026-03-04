@@ -6,12 +6,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, Spacing } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { AppHeader } from '@/components/header';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const rootBackgroundColor = useThemeColor({}, 'background');
   const insets = useSafeAreaInsets();
   const tabBarBg = useThemeColor({}, 'cardBackground');
@@ -27,8 +25,8 @@ export default function TabLayout() {
       <View style={styles.tabsContentContainer}>
         <Tabs
           screenOptions={{
-            tabBarActiveTintColor: Colors[colorScheme ?? 'light'].text,
-            tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
+            tabBarActiveTintColor: Colors.dark.text,
+            tabBarInactiveTintColor: Colors.dark.tabIconDefault,
             headerShown: false,
             tabBarButton: HapticTab,
             tabBarStyle: {
