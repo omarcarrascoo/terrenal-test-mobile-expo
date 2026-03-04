@@ -30,6 +30,12 @@ const MAPPING = {
   'pencil.write': 'edit',
   'megaphone': 'campaign',
   'person.fill': 'person',
+  'phone': 'phone',
+  'video': 'videocam',
+  'image': 'image',
+  'emoji': 'emoji-emotions',
+  'mic': 'mic',
+  'message': 'chat',
 } as IconMapping;
 
 /**

@@ -19,6 +19,10 @@ export default function TabLayout() {
     Alert.alert('Menú', 'Has presionado el botón de menú!');
   };
 
+  const handleChatPress = () => {
+    Alert.alert('Chat', 'Has presionado el botón de chat!');
+  };
+
   return (
     <View style={[styles.rootContainer, { backgroundColor: rootBackgroundColor }]}>
       <AppHeader onMenuPress={handleMenuPress} title="IBM" />
@@ -67,6 +71,13 @@ export default function TabLayout() {
             options={{
               title: 'Discuss',
               tabBarIcon: ({ color }) => <IconSymbol size={24} name="message.fill" color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="chat"
+            options={{
+              title: 'Chat',
+              tabBarIcon: ({ color }) => <IconSymbol size={24} name="message" color={color} />,
             }}
           />
         </Tabs>
