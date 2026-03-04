@@ -23,7 +23,7 @@ export default function TabLayout() {
 
   return (
     <View style={[styles.rootContainer, { backgroundColor: rootBackgroundColor }]}>
-      <AppHeader onMenuPress={handleMenuPress} title="Terrenal" />
+      <AppHeader onMenuPress={handleMenuPress} title="IBM" />
       <View style={styles.tabsContentContainer}>
         <Tabs
           screenOptions={{
