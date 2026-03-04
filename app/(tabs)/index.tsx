@@ -1,166 +1,210 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, View, Alert } from 'react-native';
+import { StyleSheet, ScrollView, View, Image, TouchableOpacity, Alert } from 'react-native';
 
 import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
-import { SearchBar } from '@/components/home/search-bar';
-import { Pill } from '@/components/home/pill';
-import { HomeBanner } from '@/components/home/home-banner';
-import { SectionHeader } from '@/components/home/section-header';
-import { CategoryHorizontalCard } from '@/components/home/category-horizontal-card';
-import { ProductVerticalCard } from '@/components/home/product-vertical-card';
-import { ImageHorizontalCard } from '@/components/home/image-horizontal-card';
-import { IconSymbolName } from '@/components/ui/icon-symbol'; // Import IconSymbolName type
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
-// Dummy data for the UI components
-const pillsData: { id: string; label: string; icon: IconSymbolName }[] = [
-  { id: '1', label: 'Favoritos', icon: 'heart.fill' },
-  { id: '2', label: 'Historial', icon: 'clock.fill' },
-  { id: '3', label: 'Seguidos', icon: 'person.3.fill' },
-  { id: '4', label: 'Pedidos', icon: 'bag.fill' },
+// Dummy data for the social feed
+const feedPosts = [
+  {
+    id: '1',
+    userName: 'Helena',
+    groupName: 'en Nombre del grupo',
+    timeAgo: 'Hace 3 minutos',
+    avatarUrl: 'https://picsum.photos/id/1005/40/40',
+    postImageUrl: 'https://picsum.photos/id/1015/343/200',
+    description: 'Descripción de la publicación',
+    likes: 21,
+    comments: 4,
+  },
+  {
+    id: '2',
+    userName: 'Daniel',
+    groupName: 'en Nombre del grupo',
+    timeAgo: 'Hace 2 horas',
+    avatarUrl: 'https://picsum.photos/id/1006/40/40',
+    postImageUrl: null,
+    description: 'Texto del cuerpo de una publicación. Como es una aplicación de redes sociales, a veces es una opinión polémica y otras veces es una pregunta.',
+    likes: 6,
+    comments: 18,
+  },
+  {
+    id: '3',
+    userName: 'Oscar',
+    groupName: 'en Nombre del grupo',
+    timeAgo: 'hace 1 día',
+    avatarUrl: 'https://picsum.photos/id/1009/40/40',
+    postImageUrl: 'https://picsum.photos/id/1018/343/200',
+    description: 'Otra publicación',
+    likes: 58,
+    comments: 5,
+  },
 ];
 
-const categoriesData = [
-  { id: '1', title: 'Comida', imageUrl: 'https://picsum.photos/id/1040/76/76' },
-  { id: '2', title: 'Ropa', imageUrl: 'https://picsum.photos/id/1041/76/76' },
-  { id: '3', title: 'Hogar', imageUrl: 'https://picsum.photos/id/1042/76/76' },
-  { id: '4', title: 'Electrónica', imageUrl: 'https://picsum.photos/id/1043/76/76' },
-  { id: '5', title: 'Libros', imageUrl: 'https://picsum.photos/id/1044/76/76' },
-  { id: '6', title: 'Deportes', imageUrl: 'https://picsum.photos/id/1045/76/76' },
-];
-
-const productsData = [
-  { id: '1', brand: 'Nike', name: 'Zapatillas Deportivas Air Max', price: '$120.00', imageUrl: 'https://picsum.photos/id/1015/148/148' },
-  { id: '2', brand: 'Adidas', name: 'Pantalones de Chándal', price: '$50.00', imageUrl: 'https://picsum.photos/id/1016/148/148' },
-  { id: '3', brand: 'Zara', name: 'Camiseta Básica Algodón', price: '$25.00', imageUrl: 'https://picsum.photos/id/1018/148/148' },
-  { id: '4', brand: 'Apple', name: 'Auriculares Inalámbricos Pro', price: '$200.00', imageUrl: 'https://picsum.photos/id/1025/148/148' },
-];
-
-const largeImageData = [
-  { id: '1', imageUrl: 'https://picsum.photos/id/1000/96/96' },
-  { id: '2', imageUrl: 'https://picsum.photos/id/1001/96/96' },
-  { id: '3', imageUrl: 'https://picsum.photos/id/1002/96/96' },
-  { id: '4', imageUrl: 'https://picsum.photos/id/1003/96/96' },
-  { id: '5', imageUrl: 'https://picsum.photos/id/1004/96/96' },
+const feedTabs = [
+  { id: 'following', label: 'Seguidos', active: false },
+  { id: 'foryou', label: 'Para ti', active: true },
+  { id: 'favorites', label: 'Favoritos', active: false },
 ];
 
 export default function HomeScreen() {
-  const [activePill, setActivePill] = useState(pillsData[0].id);
+  const [activeTab, setActiveTab] = useState('foryou');
+  const backgroundColor = useThemeColor({}, 'background');
+  const textColor = useThemeColor({}, 'text');
+  const mutedTextColor = useThemeColor({ light: 'rgba(0,0,0,0.5)', dark: 'rgba(255,255,255,0.5)' }, 'text');
+  const avatarBgColor = useThemeColor({}, 'lightNeutral');
+  const tabIndicatorColor = useThemeColor({}, 'text');
+  const tabInactiveColor = useThemeColor({ light: 'rgba(0,0,0,0.4)', dark: 'rgba(255,255,255,0.4)' }, 'text');
+  const postImageBgColor = useThemeColor({}, 'lightNeutral');
+  const iconColor = useThemeColor({}, 'text');
 
-  const handlePillPress = (id: string) => {
-    setActivePill(id);
-    Alert.alert('Pill Seleccionada', `Has seleccionado la píldora con ID: ${id}`);
+  const handleTabPress = (tabId: string) => {
+    setActiveTab(tabId);
+    Alert.alert('Tab Cambiada', `Has cambiado a la pestaña: ${tabId}`);
   };
 
-  const handleSearchPress = () => {
-    Alert.alert('Buscar', 'Has presionado la barra de búsqueda!');
-    // In a real app, navigate to a search screen or open a search modal
+  const handlePostPress = (postId: string) => {
+    Alert.alert('Publicación', `Has seleccionado la publicación con ID: ${postId}`);
   };
 
-  const handleBannerPress = () => {
-    Alert.alert('Banner', 'Has presionado el banner!');
+  const handleLikePress = (postId: string) => {
+    Alert.alert('Me gusta', `Has dado like a la publicación: ${postId}`);
   };
 
-  const handleCategoryPress = (title: string) => {
-    Alert.alert('Categoría', `Has seleccionado la categoría: ${title}`);
-    // In a real app, navigate to category details
+  const handleCommentPress = (postId: string) => {
+    Alert.alert('Comentarios', `Has presionado comentarios en: ${postId}`);
   };
 
-  const handleProductPress = (name: string) => {
-    Alert.alert('Producto', `Has seleccionado el producto: ${name}`);
-    // In a real app, navigate to product details
-  };
-
-  const handleLargeImagePress = (id: string) => {
-    Alert.alert('Imagen', `Has seleccionado la imagen con ID: ${id}`);
-    // In a real app, navigate to image gallery or details
+  const handleMorePress = (postId: string) => {
+    Alert.alert('Más opciones', `Opciones para publicación: ${postId}`);
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+    <ThemedView style={[styles.container, { backgroundColor }]}>
+      {/* Header with Tabs */}
+      <View style={[styles.header, { backgroundColor }]}>
+        <View style={styles.tabsWrapper}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.tabsContainer}
+          >
+            {feedTabs.map((tab) => (
+              <TouchableOpacity
+                key={tab.id}
+                style={styles.tabButton}
+                onPress={() => handleTabPress(tab.id)}
+              >
+                <ThemedText
+                  style={[
+                    styles.tabText,
+                    { 
+                      color: activeTab === tab.id ? textColor : tabInactiveColor,
+                      opacity: activeTab === tab.id ? 1 : 0.4,
+                    },
+                  ]}
+                >
+                  {tab.label}
+                </ThemedText>
+                {activeTab === tab.id && (
+                  <View style={[styles.tabIndicator, { backgroundColor: tabIndicatorColor }]} />
+                )}
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
 
-        {/* Search Bar */}
-        <SearchBar placeholder="Buscar productos..." onPress={handleSearchPress} />
+      {/* Social Feed */}
+      <ScrollView 
+        contentContainerStyle={styles.feedContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        {feedPosts.map((post) => (
+          <TouchableOpacity
+            key={post.id}
+            style={styles.postContainer}
+            onPress={() => handlePostPress(post.id)}
+            activeOpacity={0.9}
+          >
+            {/* Post Header */}
+            <View style={styles.postHeader}>
+              <View style={styles.avatarContainer}>
+                <View style={[styles.avatarBackground, { backgroundColor: avatarBgColor }]}>
+                  <Image source={{ uri: post.avatarUrl }} style={styles.avatarImage} />
+                </View>
+              </View>
+              
+              <View style={styles.postMetaData}>
+                <View style={styles.nameGroupRow}>
+                  <ThemedText style={[styles.userName, { color: textColor }]}>
+                    {post.userName}
+                  </ThemedText>
+                  <ThemedText style={[styles.groupName, { color: textColor }]}>
+                    {post.groupName}
+                  </ThemedText>
+                </View>
+                <ThemedText style={[styles.timeAgo, { color: mutedTextColor }]}>
+                  {post.timeAgo}
+                </ThemedText>
+              </View>
+              
+              <TouchableOpacity 
+                style={styles.moreButton}
+                onPress={() => handleMorePress(post.id)}
+              >
+                <View style={styles.moreDotsContainer}>
+                  <View style={[styles.moreDot, { backgroundColor: iconColor }]} />
+                  <View style={[styles.moreDot, { backgroundColor: iconColor }]} />
+                  <View style={[styles.moreDot, { backgroundColor: iconColor }]} />
+                </View>
+              </TouchableOpacity>
+            </View>
 
-        {/* Pills (Horizontal Scroll) */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.pillsContainer}
-        >
-          {pillsData.map((pill) => (
-            <Pill
-              key={pill.id}
-              iconName={pill.icon}
-              label={pill.label}
-              onPress={() => handlePillPress(pill.id)}
-              isActive={pill.id === activePill}
-            />
-          ))}
-        </ScrollView>
+            {/* Post Image (if exists) */}
+            {post.postImageUrl && (
+              <View style={[styles.postImageContainer, { backgroundColor: postImageBgColor }]}>
+                <Image source={{ uri: post.postImageUrl }} style={styles.postImage} />
+              </View>
+            )}
 
-        {/* Main Banner */}
-        <HomeBanner
-          title="Título del banner"
-          imageUrl="https://picsum.photos/id/10/343/136" // Placeholder image
-          onPress={handleBannerPress}
-        />
+            {/* Post Description */}
+            <View style={styles.postDescriptionContainer}>
+              <ThemedText style={[styles.postDescription, { color: textColor }]}>
+                {post.description}
+              </ThemedText>
+            </View>
 
-        {/* Categories Section */}
-        <SectionHeader title="Explorar Categorías" onPressViewAll={() => Alert.alert('Ver Todo', 'Ver todas las categorías')} />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalCarouselContainer}
-        >
-          {categoriesData.map((category) => (
-            <CategoryHorizontalCard
-              key={category.id}
-              title={category.title}
-              imageUrl={category.imageUrl}
-              onPress={() => handleCategoryPress(category.title)}
-            />
-          ))}
-        </ScrollView>
-
-        {/* Products Section */}
-        <SectionHeader title="Productos Populares" onPressViewAll={() => Alert.alert('Ver Todo', 'Ver todos los productos')} />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalCarouselContainer}
-        >
-          {productsData.map((product) => (
-            <ProductVerticalCard
-              key={product.id}
-              brand={product.brand}
-              name={product.name}
-              price={product.price}
-              imageUrl={product.imageUrl}
-              onPress={() => handleProductPress(product.name)}
-            />
-          ))}
-        </ScrollView>
-
-        {/* Large Images Section */}
-        <SectionHeader title="Novedades Destacadas" onPressViewAll={() => Alert.alert('Ver Todo', 'Ver todas las novedades')} />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalCarouselContainer}
-        >
-          {largeImageData.map((imageItem) => (
-            <ImageHorizontalCard
-              key={imageItem.id}
-              imageUrl={imageItem.imageUrl}
-              onPress={() => handleLargeImagePress(imageItem.id)}
-            />
-          ))}
-        </ScrollView>
-
-        {/* Padding for the bottom of the scroll view so content doesn't get hidden by the tab bar and footer */}
-        <View style={{ height: Spacing.xxxl * 2 }} />
+            {/* Post Actions */}
+            <View style={styles.postActions}>
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={() => handleLikePress(post.id)}
+              >
+                <IconSymbol name="heart.fill" size={20} color={iconColor} />
+                <ThemedText style={[styles.actionText, { color: textColor }]}>
+                  {post.likes} me gusta
+                </ThemedText>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={() => handleCommentPress(post.id)}
+              >
+                <IconSymbol name="message.fill" size={20} color={iconColor} />
+                <ThemedText style={[styles.actionText, { color: textColor }]}>
+                  {post.comments} comentarios
+                </ThemedText>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        ))}
+        
+        {/* Bottom padding for tab bar */}
+        <View style={{ height: 120 }} />
       </ScrollView>
     </ThemedView>
   );
@@ -169,19 +213,136 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // ThemedView already handles background color based on theme
   },
-  scrollContent: {
-    paddingTop: Spacing.large, // Initial padding at the top
+  header: {
+    paddingTop: Spacing.small,
+    paddingBottom: Spacing.small,
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
   },
-  pillsContainer: {
+  tabsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  tabsContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    gap: Spacing.xl,
+  },
+  tabButton: {
+    alignItems: 'center',
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+    lineHeight: 19.6,
+    marginBottom: Spacing.xsmall,
+  },
+  tabIndicator: {
+    width: '100%',
+    height: 2,
+    borderRadius: 1,
+  },
+  feedContainer: {
+    paddingTop: Spacing.large,
+    paddingBottom: Spacing.xxxl,
+  },
+  postContainer: {
+    marginBottom: Spacing.xxl,
     paddingHorizontal: Spacing.large,
-    paddingVertical: Spacing.medium,
-    gap: Spacing.small, // Figma itemSpacing: 8
   },
-  horizontalCarouselContainer: {
-    paddingHorizontal: Spacing.large,
-    paddingVertical: Spacing.small, // Vertical padding for carousel row
-    // The individual card components handle their right margin to create itemSpacing
+  postHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.medium,
+  },
+  avatarContainer: {
+    marginRight: Spacing.medium,
+  },
+  avatarBackground: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  postMetaData: {
+    flex: 1,
+  },
+  nameGroupRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xsmall,
+    marginBottom: 2,
+  },
+  userName: {
+    fontSize: 14,
+    fontWeight: '600',
+    lineHeight: 21,
+  },
+  groupName: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 21,
+  },
+  timeAgo: {
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 18,
+  },
+  moreButton: {
+    padding: Spacing.xsmall,
+  },
+  moreDotsContainer: {
+    width: 20,
+    height: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2,
+  },
+  moreDot: {
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+  },
+  postImageContainer: {
+    width: '100%',
+    height: 200,
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginBottom: Spacing.medium,
+  },
+  postImage: {
+    width: '100%',
+    height: '100%',
+  },
+  postDescriptionContainer: {
+    marginBottom: Spacing.medium,
+  },
+  postDescription: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 19.6,
+  },
+  postActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.large,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.small,
+  },
+  actionText: {
+    fontSize: 14,
+    fontWeight: '500',
+    lineHeight: 19.6,
   },
 });
