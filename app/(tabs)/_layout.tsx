@@ -80,6 +80,13 @@ export default function TabLayout() {
               tabBarIcon: ({ color }) => <IconSymbol size={24} name="message" color={color} />,
             }}
           />
+          <Tabs.Screen
+            name="notifications"
+            options={{
+              title: 'Notifications',
+              tabBarIcon: ({ color }) => <IconSymbol size={24} name="bell.fill" color={color} />,
+            }}
+          />
         </Tabs>
       </View>
     </View>

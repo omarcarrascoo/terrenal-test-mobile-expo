@@ -254,6 +254,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.large,
     paddingVertical: Spacing.small,
     marginRight: Spacing.small,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   categoryPillActive: {
     borderBottomWidth: 2,

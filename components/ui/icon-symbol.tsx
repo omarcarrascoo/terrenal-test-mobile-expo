@@ -36,6 +36,7 @@ const MAPPING = {
   'emoji': 'emoji-emotions',
   'mic': 'mic',
   'message': 'chat',
+  'bell.fill': 'notifications',
 } as IconMapping;
 
 /**

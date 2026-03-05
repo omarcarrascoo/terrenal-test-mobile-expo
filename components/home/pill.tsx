@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 6, // Changed from Spacing.small (8) to match Figma 6
     borderWidth: 1, // Figma strokeWeight is 1
     paddingHorizontal: Spacing.small + 2, // Figma paddingLeft/Right: 10 (Spacing.small is 8, so 10 is 8+2)
